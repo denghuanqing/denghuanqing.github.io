@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="技术驱动生活">
 <meta property="og:description" content="&amp;nbsp; &amp;nbsp;java8 也在项目中用过，但是并没有用到什么新特性，对于code来说只是更换了版本号，并没有了解过底层的变化，这次准备系统的学习一下java8的新特性。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-24T15:44:15.775Z">
+<meta property="og:updated_time" content="2018-05-24T15:50:54.597Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java8新特性01：lambda表达式">
 <meta name="twitter:description" content="&amp;nbsp; &amp;nbsp;java8 也在项目中用过，但是并没有用到什么新特性，对于code来说只是更换了版本号，并没有了解过底层的变化，这次准备系统的学习一下java8的新特性。">
@@ -373,7 +373,7 @@
 
       
         <p>&nbsp; &nbsp;java8 也在项目中用过，但是并没有用到什么新特性，对于code来说只是更换了版本号，并没有了解过底层的变化，这次准备系统的学习一下java8的新特性。<br><a id="more"></a></p>
-<p>####语法基础 M -&gt; N<br>左边M 是参数，参数若是有多个，需要用小括号。<br>右边N是方法体，方法体里面若是有多条语句，需要加大括号。<br>lambda表达式需要函数式接口支持<br>函数式接口(Functional Interface)就是一个有且仅有一个抽象方法，但是可以有多个非抽象方法的接口。抽象方法的实现可以用lambda表达式来调用。看下面的例子：<br>传统的线程实现方式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Runnable runnable = new Runnable() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                System.out.println(&quot;线程例子演示&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        new Thread(runnable).run();</span><br></pre></td></tr></table></figure></p>
+<h4 id="语法基础-M-gt-N"><a href="#语法基础-M-gt-N" class="headerlink" title="语法基础 M -&gt; N"></a>语法基础 M -&gt; N</h4><p>左边M 是参数，参数若是有多个，需要用小括号。<br>右边N是方法体，方法体里面若是有多条语句，需要加大括号。<br>lambda表达式需要函数式接口支持<br>函数式接口(Functional Interface)就是一个有且仅有一个抽象方法，但是可以有多个非抽象方法的接口。抽象方法的实现可以用lambda表达式来调用。看下面的例子：<br>传统的线程实现方式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Runnable runnable = new Runnable() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                System.out.println(&quot;线程例子演示&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        new Thread(runnable).run();</span><br></pre></td></tr></table></figure></p>
 <p>我们采用lambda表达式之后的写法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> //这里 表达式的左边是小括号表示Runnable接口中的抽象方法没有参数，表达式的右边是方法体。</span><br><span class="line"> // 整个表达式意思就是new了一个Runnable接口的实现类，并且覆盖了run方法。</span><br><span class="line"> Runnable runnable = () -&gt; System.out.println(&quot;线程例子演示&quot; + Thread.currentThread().getName());</span><br><span class="line"></span><br><span class="line">new Thread(runnable).start();</span><br></pre></td></tr></table></figure></p>
 <p>除此之外，lambda表达式还有<strong>方法引用</strong> <strong>构造函数引用</strong>写法。方法引用有几种方式：类::静态方法名 类::实例方法名 对象::实例方法名 ，类::new<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 所有的方法引用要求：引用方法的参数，返回值和函数接口抽象方法的参数，返回值要一致。（类似于重写的概念）</span><br><span class="line">Consumer&lt;Boolean&gt; consume= System.out::println;</span><br><span class="line">consume.accept(true);</span><br><span class="line"></span><br><span class="line">// 由于Supplier中的抽象方法没有参数，所以调用的是String的无参构造器</span><br><span class="line">Supplier&lt;String&gt; ss= String::new;</span><br><span class="line">System.out.println(ss.get());</span><br><span class="line"></span><br><span class="line">// 由于Function中的抽象方法有参数，所以调用的是String的带参构造器</span><br><span class="line">Function&lt;String,String&gt; sss=String::new;</span><br><span class="line">System.out.println(sss.apply(&quot;java niubi&quot;));</span><br></pre></td></tr></table></figure></p>
 <h4 id="函数接口（Function-Interface）"><a href="#函数接口（Function-Interface）" class="headerlink" title="函数接口（Function Interface）"></a>函数接口（Function Interface）</h4><p>lambda表达式依赖于函数接口，它返回的对象就是等同于new 一个接口的实现类，复写其抽象方法。并且支持自定义方法体内容。减少了代码量。</p>
@@ -401,7 +401,7 @@
 <li>Function – 函数：传入一个参数，返回一个结果，方法为R apply(T t)</li>
 <li>Supplier – 供给：无参数传入，返回一个结果，方法为T get()</li>
 <li>UnaryOperator – 一元操作符， 继承Function,传入参数的类型和返回类型相同。</li>
-<li>BinaryOperator – 二元操作符， 传入的两个参数的类型和返回类型相同， 继承BiFunction<br>####常见的应用场景</li>
+<li>BinaryOperator – 二元操作符， 传入的两个参数的类型和返回类型相同， 继承BiFunction<h4 id="常见的应用场景"><a href="#常见的应用场景" class="headerlink" title="常见的应用场景"></a>常见的应用场景</h4></li>
 </ul>
 </li>
 <li><p>遍历集合(Iterable接口)</p>
@@ -568,7 +568,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#函数接口（Function-Interface）"><span class="nav-number">1.</span> <span class="nav-text">函数接口（Function Interface）</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#语法基础-M-gt-N"><span class="nav-number">1.</span> <span class="nav-text">语法基础 M -&gt; N</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#函数接口（Function-Interface）"><span class="nav-number">2.</span> <span class="nav-text">函数接口（Function Interface）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常见的应用场景"><span class="nav-number">3.</span> <span class="nav-text">常见的应用场景</span></a></li></ol></div>
             
 
           </div>
