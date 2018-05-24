@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Poppy个人博客, 技术驱动生活,邓焕清,denghuanqing" />
 
 
 
@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="技术驱动生活">
 <meta property="og:description" content="&amp;nbsp; &amp;nbsp;java8 也在项目中用过，但是并没有用到什么新特性，对于code来说只是更换了版本号，并没有了解过底层的变化，这次准备系统的学习一下java8的新特性。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-24T15:50:54.597Z">
+<meta property="og:updated_time" content="2018-05-24T15:54:19.031Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java8新特性01：lambda表达式">
 <meta name="twitter:description" content="&amp;nbsp; &amp;nbsp;java8 也在项目中用过，但是并没有用到什么新特性，对于code来说只是更换了版本号，并没有了解过底层的变化，这次准备系统的学习一下java8的新特性。">
@@ -401,9 +401,11 @@
 <li>Function – 函数：传入一个参数，返回一个结果，方法为R apply(T t)</li>
 <li>Supplier – 供给：无参数传入，返回一个结果，方法为T get()</li>
 <li>UnaryOperator – 一元操作符， 继承Function,传入参数的类型和返回类型相同。</li>
-<li>BinaryOperator – 二元操作符， 传入的两个参数的类型和返回类型相同， 继承BiFunction<h4 id="常见的应用场景"><a href="#常见的应用场景" class="headerlink" title="常见的应用场景"></a>常见的应用场景</h4></li>
+<li>BinaryOperator – 二元操作符， 传入的两个参数的类型和返回类型相同， 继承BiFunction</li>
 </ul>
 </li>
+</ul>
+<h4 id="常见的应用场景"><a href="#常见的应用场景" class="headerlink" title="常见的应用场景"></a>常见的应用场景</h4><ul>
 <li><p>遍历集合(Iterable接口)</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; numbers = Arrays.asList(1, 2, 3, 4, 5);</span><br><span class="line">// 实质上调用了Consumer接口的accept方法</span><br><span class="line">numbers.forEach(x -&gt; System.out.println(x));</span><br></pre></td></tr></table></figure>
 </li>
