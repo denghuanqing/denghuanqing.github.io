@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="技术驱动生活">
 <meta property="og:description" content="&amp;nbsp; &amp;nbsp;Stream流自己不存储元素，不会改变源数据，操作是延迟执行（懒汉式）即中间操作不会执行，除非终止操作触发。  创建stream-&amp;gt;中间操作-&amp;gt;终止操作">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-26T08:22:15.897Z">
+<meta property="og:updated_time" content="2018-05-26T14:55:04.848Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java8新特性02：Stream流">
 <meta name="twitter:description" content="&amp;nbsp; &amp;nbsp;Stream流自己不存储元素，不会改变源数据，操作是延迟执行（懒汉式）即中间操作不会执行，除非终止操作触发。  创建stream-&amp;gt;中间操作-&amp;gt;终止操作">
@@ -388,10 +388,30 @@
 </li>
 </ul>
 <h2 id="映射"><a href="#映射" class="headerlink" title="映射"></a>映射</h2><ul>
-<li>map 把元素中的每一个元素通过一个Function转成一个新的集合</li>
-<li>flatmap 瘦身嵌套流，返回每个嵌套流的最底层集合</li>
+<li>map 接收一个函数接口，把元素中的每一个元素通过Function的返回转成一个新的集合</li>
+<li>flatmap 瘦身嵌套流，返回每个嵌套流的最底层集合<br>区别：map就是把流加在新流中，flatmap就是把流中的元素加在新流中。map 对 flatMap 相当于 集合add对addAll</li>
 </ul>
-
+<h2 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h2><ul>
+<li>sorted自然排序</li>
+<li>sorted(Comparator&lt;? super T&gt; comparator) 自定义排序</li>
+</ul>
+<h1 id="终止操作（流实际执行阶段）"><a href="#终止操作（流实际执行阶段）" class="headerlink" title="终止操作（流实际执行阶段）"></a>终止操作（流实际执行阶段）</h1><h2 id="匹配-amp-查找"><a href="#匹配-amp-查找" class="headerlink" title="匹配&amp;查找"></a>匹配&amp;查找</h2><ul>
+<li>allMatch 检查是否匹配所有 返回boolean</li>
+<li>anyMatch是否至少匹配一个</li>
+<li>noneMatch 是否都不匹配</li>
+<li>findFirst 返回第一个元素</li>
+<li>findAny 并不是纯随机？需要结合并行流来使用？</li>
+<li>count 计数 返回long类型</li>
+<li>max (Comparator&lt;? super T&gt; comparator)   第一个</li>
+<li>min(Comparator&lt;? super T&gt; comparator) max&amp;min都要求传入Compaertor 最后一个</li>
+</ul>
+<h2 id="规约"><a href="#规约" class="headerlink" title="规约"></a>规约</h2><ul>
+<li>reduce()求和？ 累计结果集</li>
+</ul>
+<h2 id="收集"><a href="#收集" class="headerlink" title="收集"></a>收集</h2><ul>
+<li>collect() 把流转换为其他数据格式，比如list转换为map。collectors提供很多常用的实现(具体看源码注释)，eg：toList,toMap…</li>
+</ul>
+<h1 id="并行流与串行流"><a href="#并行流与串行流" class="headerlink" title="并行流与串行流"></a>并行流与串行流</h1>
       
     </div>
     
@@ -552,7 +572,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#创建Stream"><span class="nav-number">1.</span> <span class="nav-text">创建Stream</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#中间操作"><span class="nav-number">2.</span> <span class="nav-text">中间操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#筛选与切片"><span class="nav-number">2.1.</span> <span class="nav-text">筛选与切片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#映射"><span class="nav-number">2.2.</span> <span class="nav-text">映射</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#创建Stream"><span class="nav-number">1.</span> <span class="nav-text">创建Stream</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#中间操作"><span class="nav-number">2.</span> <span class="nav-text">中间操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#筛选与切片"><span class="nav-number">2.1.</span> <span class="nav-text">筛选与切片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#映射"><span class="nav-number">2.2.</span> <span class="nav-text">映射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#排序"><span class="nav-number">2.3.</span> <span class="nav-text">排序</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#终止操作（流实际执行阶段）"><span class="nav-number">3.</span> <span class="nav-text">终止操作（流实际执行阶段）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#匹配-amp-查找"><span class="nav-number">3.1.</span> <span class="nav-text">匹配&amp;查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#规约"><span class="nav-number">3.2.</span> <span class="nav-text">规约</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#收集"><span class="nav-number">3.3.</span> <span class="nav-text">收集</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#并行流与串行流"><span class="nav-number">4.</span> <span class="nav-text">并行流与串行流</span></a></li></ol></div>
             
 
           </div>
