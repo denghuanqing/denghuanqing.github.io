@@ -94,18 +94,17 @@
 
 
 
-<meta name="description" content="42条:慎用可变参数今天遇到一个问题，String-&amp;gt;字节数组-&amp;gt;List ,发现没有很好的解决办法。看下面代码：123456char[] chars = new char[]&amp;#123;&amp;apos;1&amp;apos;,&amp;apos;2&amp;apos;,&amp;apos;3&amp;apos;&amp;#125;;// 这里并没有返回我需要的List&amp;lt;char&amp;gt;List&amp;lt;char[]&amp;gt; cha">
+<meta name="description" content="记录技术历程">
 <meta name="keywords" content="个人博客,Poppy">
-<meta property="og:type" content="article">
-<meta property="og:title" content="《effective java》 读书笔记">
-<meta property="og:url" content="http://yoursite.com/2018/05/26/《effective-java》-读书笔记/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="技术驱动生活">
+<meta property="og:url" content="http://yoursite.com/page/2/index.html">
 <meta property="og:site_name" content="技术驱动生活">
-<meta property="og:description" content="42条:慎用可变参数今天遇到一个问题，String-&amp;gt;字节数组-&amp;gt;List ,发现没有很好的解决办法。看下面代码：123456char[] chars = new char[]&amp;#123;&amp;apos;1&amp;apos;,&amp;apos;2&amp;apos;,&amp;apos;3&amp;apos;&amp;#125;;// 这里并没有返回我需要的List&amp;lt;char&amp;gt;List&amp;lt;char[]&amp;gt; cha">
+<meta property="og:description" content="记录技术历程">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-26T11:16:55.668Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="《effective java》 读书笔记">
-<meta name="twitter:description" content="42条:慎用可变参数今天遇到一个问题，String-&amp;gt;字节数组-&amp;gt;List ,发现没有很好的解决办法。看下面代码：123456char[] chars = new char[]&amp;#123;&amp;apos;1&amp;apos;,&amp;apos;2&amp;apos;,&amp;apos;3&amp;apos;&amp;#125;;// 这里并没有返回我需要的List&amp;lt;char&amp;gt;List&amp;lt;char[]&amp;gt; cha">
+<meta name="twitter:title" content="技术驱动生活">
+<meta name="twitter:description" content="记录技术历程">
 
 
 
@@ -134,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/05/26/《effective-java》-读书笔记/"/>
+  <link rel="canonical" href="http://yoursite.com/page/2/"/>
 
 
 
 
 
-  <title>《effective java》 读书笔记 | 技术驱动生活</title>
+  <title>技术驱动生活</title>
   
 
 
@@ -175,7 +174,9 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail ">
+  <div class="container sidebar-position-left 
+   page-home 
+ ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -268,9 +269,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-expand">
     
+      
 
   
 
@@ -283,7 +284,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/26/《effective-java》-读书笔记/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/23/jfinal源码01：接管web请求/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Poppy">
@@ -300,7 +301,9 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">《effective java》 读书笔记</h1>
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/23/jfinal源码01：接管web请求/" itemprop="url">jfinal源码01：接管web请求</a></h1>
         
 
         <div class="post-meta">
@@ -312,8 +315,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-26T17:21:02+08:00">
-                2018-05-26
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-23T14:26:57+08:00">
+                2018-05-23
               </time>
             
 
@@ -335,8 +338,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/读书笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">读书笔记</span>
+                  <a href="/categories/JFinal/" itemprop="url" rel="index">
+                    <span itemprop="name">JFinal</span>
                   </a>
                 </span>
 
@@ -372,42 +375,16 @@
       
 
       
-        <h1 id="42条-慎用可变参数"><a href="#42条-慎用可变参数" class="headerlink" title="42条:慎用可变参数"></a>42条:慎用可变参数</h1><p>今天遇到一个问题，String-&gt;字节数组-&gt;List ,发现没有很好的解决办法。看下面代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">char[] chars = new char[]&#123;&apos;1&apos;,&apos;2&apos;,&apos;3&apos;&#125;;</span><br><span class="line">// 这里并没有返回我需要的List&lt;char&gt;</span><br><span class="line">List&lt;char[]&gt; chars1 = Arrays.asList(chars);</span><br><span class="line"></span><br><span class="line">Character[] chars2 = new Character[]&#123;&apos;1&apos;,&apos;2&apos;,&apos;3&apos;&#125;;</span><br><span class="line">List&lt;Character&gt; characters = Arrays.asList(chars2);</span><br></pre></td></tr></table></figure></p>
-<p>在Arrays.asList方法中T是参数类型，它必须为一个Object 类型，但是char是<strong>基本类型</strong>。所以不会返回正常的结果。直接打印会产生没有意义的字符串：@3e5d…</p>
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案;"></a>解决方案;</h2><p>1.使用Apache Commons Lang吧，可能你的项目正在使用它，类似下面这样使用ArrayUtils.toObject：<br>2.手动for循环<br>3.Arrays.asList()方法并不支持基本类型（int,char,long等）的数据转换成list。只支持Object类型，即包装类型。</p>
-<h2 id="思考："><a href="#思考：" class="headerlink" title="思考："></a>思考：</h2><p>其实Arrays.asList方法底层就是可变参数的实现案例，书上说我们每次调用可变参数的方法时都会导致数组分配和初始化，所以会有一定的性能成本。想起来之前有个同事在组装发送微信模板消息的代码时自定了一个可变参数的方法。那么其实优化策略可以如下：<br>若是实际的业务 95%的调用会带三个或三个以下的参数，还有极少数的情况会带有可变参数，我们做成重载的方法以减少对可变参数的调用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public void senMsg()&#123;&#125;</span><br><span class="line">public void senMsg(int a)&#123;&#125;</span><br><span class="line">public void senMsg(int a,int b)&#123;&#125;</span><br><span class="line">public void senMsg(int a,int b,int c)&#123;&#125;</span><br><span class="line">// 以减少这个方法的调用次数，但是又不失灵活性</span><br><span class="line">public void senMsg(int a,int b,int c,int ... array)&#123;&#125;</span><br></pre></td></tr></table></figure></p>
-<p>测试了一下可变参数调用效率<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">int num = 500000000;</span><br><span class="line">        Profiler profiler = new Profiler(&quot;one&quot;);</span><br><span class="line">        profiler.start(&quot;A&quot;);</span><br><span class="line">        for (int i = 0; i &lt; num; i++) &#123;</span><br><span class="line">            senMsg(1, 2, 3);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        profiler.start(&quot;B&quot;);</span><br><span class="line">        for (int i = 0; i &lt; num; i++) &#123;</span><br><span class="line">			// 5，6 作为可变参数传入</span><br><span class="line">            senMsg(1, 2, 3, 5, 6);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<table>
-<thead>
-<tr>
-<th>求和运算</th>
-<th style="text-align:center">1000</th>
-<th style="text-align:center">5000</th>
-<th style="text-align:right">100000000</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>不带可变参数</td>
-<td style="text-align:center">52.338 microseconds</td>
-<td style="text-align:center">3.216 milliseconds</td>
-<td style="text-align:right">2.953</td>
-</tr>
-<tr>
-<td>带可变参数</td>
-<td style="text-align:center">126.294</td>
-<td style="text-align:center">15.760</td>
-<td style="text-align:right">4593.421</td>
-</tr>
-<tr>
-<td>倍数</td>
-<td style="text-align:center">2.423</td>
-<td style="text-align:center">4.90</td>
-<td style="text-align:right">1555.5</td>
-</tr>
-</tbody>
-</table>
-
+        
+          <p>最近年前不是很忙，同时感觉自己有点迷失。少了刚出学校的那份激情。这种思想挺危险的，所以就决定沉寂一下自己的心灵。好好看看大神的代码。然后坚持写自己技术文章的第一个系列-jfinal源码之路。2017.12.10<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/05/23/jfinal源码01：接管web请求/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
       
     </div>
     
@@ -424,32 +401,12 @@
       
 
       
-      
+
       
 
       
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/05/26/java8新特性02：Stream流/" rel="next" title="java8新特性02：Stream流">
-                <i class="fa fa-chevron-left"></i> java8新特性02：Stream流
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/05/28/java8新特性03：Optional容器类/" rel="prev" title="java8新特性03：Optional容器类">
-                java8新特性03：Optional容器类 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
       
-
-      
+        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -459,11 +416,14 @@
   </article>
 
 
+    
+  </section>
 
-    <div class="post-spread">
-      
-    </div>
-  </div>
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
 
 
           </div>
@@ -471,10 +431,6 @@
 
 
           
-  <div class="comments" id="comments">
-    
-  </div>
-
 
         </div>
         
@@ -495,17 +451,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="https://cdn-img.easyicon.net/png/5368/536898.gif"
@@ -558,22 +505,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#42条-慎用可变参数"><span class="nav-number">1.</span> <span class="nav-text">42条:慎用可变参数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方案"><span class="nav-number">1.1.</span> <span class="nav-text">解决方案;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思考："><span class="nav-number">1.2.</span> <span class="nav-text">思考：</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -687,10 +618,10 @@
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
-
+  
 
   
 
