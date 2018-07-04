@@ -94,20 +94,18 @@
 
 
 
-<meta name="description" content="jfinal以插件的形式封装了jdbc">
+<meta name="description" content="经历几个项目后，发现不同的项目用的日志框架也不太一样，导致每次在应用层输出日志的写法不统一。或者日志不输出，或者不能在调试时候输出自己想要的日志级别。首先，日志对业务很重要，其次，在分析别人源码，或者一些开源框架在启动时都会打出相应的日志。理解好日志系统，也能帮助我们更好的学习别人的项目。之前在使用开源技术的时候一般都是在网上找各种maven，配置等。后来发现一味的直接去拿，自己的印象不深，并且经">
 <meta name="keywords" content="个人博客,Poppy">
 <meta property="og:type" content="article">
-<meta property="og:title" content="jfinal源码05：jdbc">
-<meta property="og:url" content="http://yoursite.com/2018/05/23/jfinal源码05：jdbc/index.html">
+<meta property="og:title" content="log4j2 sl4j 实践">
+<meta property="og:url" content="http://yoursite.com/2018/07/04/log4j2-sl4j-实践/index.html">
 <meta property="og:site_name" content="技术驱动生活">
-<meta property="og:description" content="jfinal以插件的形式封装了jdbc">
+<meta property="og:description" content="经历几个项目后，发现不同的项目用的日志框架也不太一样，导致每次在应用层输出日志的写法不统一。或者日志不输出，或者不能在调试时候输出自己想要的日志级别。首先，日志对业务很重要，其次，在分析别人源码，或者一些开源框架在启动时都会打出相应的日志。理解好日志系统，也能帮助我们更好的学习别人的项目。之前在使用开源技术的时候一般都是在网上找各种maven，配置等。后来发现一味的直接去拿，自己的印象不深，并且经">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7027953-58820eb2e892251d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-05-23T06:43:04.000Z">
+<meta property="og:updated_time" content="2018-07-04T15:47:32.975Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="jfinal源码05：jdbc">
-<meta name="twitter:description" content="jfinal以插件的形式封装了jdbc">
-<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/7027953-58820eb2e892251d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:title" content="log4j2 sl4j 实践">
+<meta name="twitter:description" content="经历几个项目后，发现不同的项目用的日志框架也不太一样，导致每次在应用层输出日志的写法不统一。或者日志不输出，或者不能在调试时候输出自己想要的日志级别。首先，日志对业务很重要，其次，在分析别人源码，或者一些开源框架在启动时都会打出相应的日志。理解好日志系统，也能帮助我们更好的学习别人的项目。之前在使用开源技术的时候一般都是在网上找各种maven，配置等。后来发现一味的直接去拿，自己的印象不深，并且经">
 
 
 
@@ -136,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/05/23/jfinal源码05：jdbc/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/07/04/log4j2-sl4j-实践/"/>
 
 
 
 
 
-  <title>jfinal源码05：jdbc | 技术驱动生活</title>
+  <title>log4j2 sl4j 实践 | 技术驱动生活</title>
   
 
 
@@ -285,7 +283,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/23/jfinal源码05：jdbc/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/04/log4j2-sl4j-实践/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Poppy">
@@ -302,7 +300,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">jfinal源码05：jdbc</h1>
+          <h1 class="post-title" itemprop="name headline">log4j2 sl4j 实践</h1>
         
 
         <div class="post-meta">
@@ -314,8 +312,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-23T14:42:22+08:00">
-                2018-05-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-04T23:07:01+08:00">
+                2018-07-04
               </time>
             
 
@@ -337,8 +335,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JFinal/" itemprop="url" rel="index">
-                    <span itemprop="name">JFinal</span>
+                  <a href="/categories/spring/" itemprop="url" rel="index">
+                    <span itemprop="name">spring</span>
                   </a>
                 </span>
 
@@ -374,14 +372,14 @@
       
 
       
-        <p>jfinal以插件的形式封装了jdbc<br><a id="more"></a></p>
-<h5 id="5-1-Model一个实例对应一张表"><a href="#5-1-Model一个实例对应一张表" class="headerlink" title="5.1 Model一个实例对应一张表"></a>5.1 Model一个实例对应一张表</h5><p>ActiveRecordPlugin类 通过List集合维护了项目中所有的表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//配置文件</span><br><span class="line">arp.addMapping(&quot;tb_item&quot;, User.class);</span><br><span class="line">// 存放了所有的Table，对应数据库的表</span><br><span class="line">private List&lt;Table&gt; tableList = new ArrayList&lt;Table&gt;();</span><br><span class="line">// 226   维护TableMapping类的modelToTableMap 存放&lt;class,table&gt;映射</span><br><span class="line">new TableBuilder().build(tableList, config);</span><br></pre></td></tr></table></figure></p>
-<p>Table类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">       private String name;//表名</span><br><span class="line">private String[] primaryKey = null;</span><br><span class="line">       // </span><br><span class="line">private Map&lt;String, Class&lt;?&gt;&gt; columnTypeMap;	// config.containerFactory.getAttrsMap();</span><br><span class="line"></span><br><span class="line">private Class&lt;? extends Model&lt;?&gt;&gt; modelClass;</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://upload-images.jianshu.io/upload_images/7027953-58820eb2e892251d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
-<p>ModelBuilder类的build方法，<strong>完成了数据库表列名，到Model对象参数名的映射</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public &lt;T&gt; List&lt;T&gt; build(ResultSet rs, Class&lt;? extends Model&gt; modelClass) throws SQLException, InstantiationException, IllegalAccessException &#123;</span><br><span class="line">		List&lt;T&gt; result = new ArrayList&lt;T&gt;();</span><br><span class="line">		ResultSetMetaData rsmd = rs.getMetaData();</span><br><span class="line">		int columnCount = rsmd.getColumnCount();</span><br><span class="line">		String[] labelNames = new String[columnCount + 1];</span><br><span class="line">		int[] types = new int[columnCount + 1];</span><br><span class="line">      // 从结果集中获取每一列的  列名称 和 列类型 集合</span><br><span class="line">		buildLabelNamesAndTypes(rsmd, labelNames, types);</span><br><span class="line">		while (rs.next()) &#123;</span><br><span class="line">			Model&lt;?&gt; ar = modelClass.newInstance();</span><br><span class="line">			Map&lt;String, Object&gt; attrs = ar._getAttrs();</span><br><span class="line">			for (int i=1; i&lt;=columnCount; i++) &#123;</span><br><span class="line">				Object value;</span><br><span class="line">				if (types[i] &lt; Types.BLOB)</span><br><span class="line">					value = rs.getObject(i);</span><br><span class="line">				else if (types[i] == Types.CLOB)</span><br><span class="line">					value = handleClob(rs.getClob(i));</span><br><span class="line">				else if (types[i] == Types.NCLOB)</span><br><span class="line">					value = handleClob(rs.getNClob(i));</span><br><span class="line">				else if (types[i] == Types.BLOB)</span><br><span class="line">					value = handleBlob(rs.getBlob(i));</span><br><span class="line">				else</span><br><span class="line">					value = rs.getObject(i);</span><br><span class="line">				// 填充Model的字段信息 &lt;参数名，参数值&gt;</span><br><span class="line">				attrs.put(labelNames[i], value);</span><br><span class="line">			&#125;</span><br><span class="line">			result.add((T)ar);</span><br><span class="line">		&#125;</span><br><span class="line">      // 返回Model对象的结果集</span><br><span class="line">		return result;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
-<p>Model类主要就关注attrs属性 用一个map集合替代了传统javaBean的属性（从resultSet中取出来）</p>
-<p>tips：<br>1.getModel 其实调原理就是从request中获取Map参数集合，遍历Map在set到model<br>2.可以同过TableMapping获取表相关信息，Table user = TableMapping.me().getTable(User.class);</p>
-<h5 id="5-2-Db"><a href="#5-2-Db" class="headerlink" title="5.2 Db"></a>5.2 Db</h5><p>model有很多方法都是间接的在调用Db -&gt; DbPro<br>model 和Db存在数据源的问题，大体调用方法一致  核心代码就是ModelBuild类build方法</p>
+        <p>经历几个项目后，发现不同的项目用的日志框架也不太一样，导致每次在应用层输出日志的写法不统一。或者日志不输出，或者不能在调试时候输出自己想要的日志级别。<br>首先，日志对业务很重要，其次，在分析别人源码，或者一些开源框架在启动时都会打出相应的日志。理解好日志系统，也能帮助我们更好的学习别人的项目。<br>之前在使用开源技术的时候一般都是在网上找各种maven，配置等。后来发现一味的直接去拿，自己的印象不深，并且经常会遇到和预期结果不一样。只能改了又试，试了又改，<br>(在日志配置这块我经常这样折腾自己)非常浪费时间，所以现在要慢慢养成看官方文档的习惯。<br><a id="more"></a></p>
+<h3 id="常见的日志框架"><a href="#常见的日志框架" class="headerlink" title="常见的日志框架"></a>常见的日志框架</h3><p>我们常见的日志框架包括：logback，log4j，log4j2等，slf4j只是一个抽象的日志api，他的作用是不改变应用层日志的写法，可以根据需求切换不同的日志框架。<br>slf4j的官方文档里面有一个介绍视频：<a href="https://www.slf4j.org/docs.html" target="_blank" rel="noopener">https://www.slf4j.org/docs.html</a> 我们这里采用slf4j log4j2的组合。</p>
+<h3 id="maven依赖"><a href="#maven依赖" class="headerlink" title="maven依赖"></a>maven依赖</h3><p><a href="https://www.slf4j.org/download.html" target="_blank" rel="noopener">sl4j</a><br><a href="https://logging.apache.org/log4j/2.x/maven-artifacts.html" target="_blank" rel="noopener">log4j2</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;log4j-api&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;2.10.0&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;log4j-core&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;2.10.0&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.apache.logging.log4j&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;log4j-slf4j-impl&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;2.10.0&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.slf4j&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;1.7.25&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
+<p>为什么只需要应用这几个jar？官方文档中有一句：<code>Simply include the Log4j 2 SLF4J Binding jar along with the Log4j 2 jars and SLF4J API jar to cause all SLF4J logging to be handled by Log4j 2.</code><br>大概翻译就是：著需要引用 Log4j 2 SLF4J Binding jar ，Log4j 2 jars，SLF4J API jar 就可以让log4j 2来处理日志</p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>配置的话，我们可以参考log4j官方文档：<a href="https://logging.apache.org/log4j/2.x/manual/configuration.html" target="_blank" rel="noopener">https://logging.apache.org/log4j/2.x/manual/configuration.html</a></p>
+<h4 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h4><p>文档中有写配置文件的加载顺序，应用层的一般写法是在resource目录下新建一个命名为：log4j2.xml的配置文件，注意log4j2不再支持.properties配置文件。</p>
+<h4 id="是否需要显示的在spring中激活配置文件？"><a href="#是否需要显示的在spring中激活配置文件？" class="headerlink" title="是否需要显示的在spring中激活配置文件？"></a>是否需要显示的在spring中激活配置文件？</h4><p>答案是否。<a href="https://logging.apache.org/log4j/2.x/manual/webapp.html" target="_blank" rel="noopener">https://logging.apache.org/log4j/2.x/manual/webapp.html</a> 官方文档中讲到：servlet 3.0 以及高于他的版本会自动加载这个配置文件，紧接着，文档提到。tomcat7.0 版本会忽略log4j <em> .jar的JAR文件<br>所以必须得将web容器升级到8.0或者更高。或者修改catalina.properties并从jarsToSkip属性中删除“log4j </em> .jar”。</p>
+<h4 id="配置文件-1"><a href="#配置文件-1" class="headerlink" title="配置文件"></a>配置文件</h4><p>未完待续…</p>
 
       
     </div>
@@ -406,8 +404,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/05/23/jfinal源码04：web之Interceptor/" rel="next" title="jfinal源码04：web之Interceptor">
-                <i class="fa fa-chevron-left"></i> jfinal源码04：web之Interceptor
+              <a href="/2018/06/10/Http参数位置和springMVC接收参数方式总结/" rel="next" title="Http参数位置和springMVC接收参数方式总结">
+                <i class="fa fa-chevron-left"></i> Http参数位置和springMVC接收参数方式总结
               </a>
             
           </div>
@@ -415,10 +413,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/05/23/jfinal源码06：事物实现原理/" rel="prev" title="jfinal源码06：事物实现原理">
-                jfinal源码06：事物实现原理 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -543,7 +537,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#5-1-Model一个实例对应一张表"><span class="nav-number">1.</span> <span class="nav-text">5.1 Model一个实例对应一张表</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-2-Db"><span class="nav-number">2.</span> <span class="nav-text">5.2 Db</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#常见的日志框架"><span class="nav-number">1.</span> <span class="nav-text">常见的日志框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#maven依赖"><span class="nav-number">2.</span> <span class="nav-text">maven依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置"><span class="nav-number">3.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置文件"><span class="nav-number">3.1.</span> <span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#是否需要显示的在spring中激活配置文件？"><span class="nav-number">3.2.</span> <span class="nav-text">是否需要显示的在spring中激活配置文件？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置文件-1"><span class="nav-number">3.3.</span> <span class="nav-text">配置文件</span></a></li></ol></li></ol></div>
             
 
           </div>
